@@ -1,0 +1,87 @@
+### Input:
+Tables in this SQLite database:
+- orders: Consists of orders information for customers, order purchase time, estimated delivery date and actual delivery date
+- order_items: Consists of the order items in a order, its product and seller details, price and freight value
+- order_payments: Consists of details on payment for an order, its payment type and payment_installments
+- order_reviews: Consists of the reviews score for an order
+- customers: Consists of customer details, their city, state and zip code prefix information
+- sellers: Consists of seller information, their city, state and zip code prefix information
+- products: Consists various product categories to which an order item belongs to in a order
+
+##### importan!
+- In the table specification refers to primary key and FK is foreign key representation
+- ||--o{ refers to one to zero/many relation and }|--|| refers to one/many to one relation
+- The common representation of table is:
+    <table_name> {
+        [data_type] <column_name> nil/PK/FK
+    }
+```mermaid
+erDiagram
+    orders ||--o{ order_items : contains
+    orders ||--o{ order_payments : has
+    orders ||--o{ order_reviews : has
+    orders }|--|| customers : placed_by
+    order_items }|--|| products : includes
+    order_items }|--|| sellers : sold_by
+    orders {
+        string order_id PK
+        string customer_id FK
+        string order_status
+        datetime order_purchase_timestamp
+        datetime order_approved_at
+        datetime order_delivered_carrier_date
+        datetime order_delivered_customer_date
+        datetime order_estimated_delivery_date
+    }
+    order_items {
+        string order_id FK
+        int order_item_id PK
+        string product_id FK
+        string seller_id FK
+        datetime shipping_limit_date
+        float price
+        float freight_value
+    }
+    order_payments {
+        string order_id FK
+        int payment_sequential
+        string payment_type
+        int payment_installments
+        float payment_value
+    }
+    order_reviews {
+        string review_id PK
+        string order_id FK
+        int review_score
+        string review_comment_title
+        string review_comment_message
+        datetime review_creation_date
+        datetime review_answer_timestamp
+    }
+    customers {
+        string customer_id PK
+        string customer_unique_id
+        string customer_zip_code_prefix FK
+        string customer_city
+        string customer_state
+    }
+    sellers {
+        string seller_id PK
+        string seller_zip_code_prefix FK
+        string seller_city
+        string seller_state
+    }
+    products {
+        string product_id PK
+        string product_category_name
+        int product_name_length
+        int product_description_length
+        int product_photos_qty
+        float product_weight_g
+        float product_length_cm
+        float product_height_cm
+        float product_width_cm
+    }
+```
+### Question :
+$question
